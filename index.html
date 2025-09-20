@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StegAnalyzer Pro - Advanced Steganography Detection Tool</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body data-color-scheme="dark">
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header__content">
+                <div class="header__brand">
+                    <i class="fas fa-shield-alt header__icon"></i>
+                    <h1 class="header__title">StegAnalyzer Pro</h1>
+                </div>
+                <div class="header__actions">
+                    <button class="btn btn--outline" id="helpBtn">
+                        <i class="fas fa-question-circle"></i>
+                        Help
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="hero__content">
+                    <h2 class="hero__title">Advanced Steganography Detection</h2>
+                    <p class="hero__subtitle">Detect hidden data in images using multiple statistical and pattern-based analysis methods</p>
+                </div>
+          <!-- Upload Zone -->
+<section class="upload-section">
+  <div class="upload-zone" id="uploadZone">
+    <div class="upload-zone__content">
+      <i class="fas fa-cloud-upload-alt upload-zone__icon"></i>
+      <h3 class="upload-zone__title">Drop images here or click to upload</h3>
+      <p class="upload-zone__subtitle">
+        Supports PNG, JPEG, BMP, TIFF formats • Single or batch upload
+      </p>
+
+      <!-- ✅ FIX: input is hidden with "hidden", not display:none -->
+      <input type="file" id="fileInput" accept="image/*" multiple hidden>
+
+      <!-- ✅ Label explicitly linked to input -->
+      <label for="fileInput" class="btn btn--primary upload-zone__button">
+        <i class="fas fa-folder-open"></i>
+        Choose Files
+      </label>
+    </div>
+  </div>
+</section>
+
+
+
+
+            <!-- Analysis Panel -->
+            <section class="analysis-panel" id="analysisPanel" style="display: none;">
+                <div class="card">
+                    <div class="card__body">
+                        <h3 class="analysis-panel__title">
+                            <i class="fas fa-cog fa-spin"></i>
+                            Analysis in Progress
+                        </h3>
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-bar__fill" id="progressBarFill"></div>
+                            </div>
+                            <span class="progress-text" id="progressText">0%</span>
+                        </div>
+                        <div class="analysis-methods">
+                            <h4>Detection Methods:</h4>
+                            <div class="methods-grid">
+                                <div class="method-item">
+                                    <i class="fas fa-chart-bar"></i>
+                                    <span>Chi-Square Test</span>
+                                </div>
+                                <div class="method-item">
+                                    <i class="fas fa-wave-square"></i>
+                                    <span>RS Analysis</span>
+                                </div>
+                                <div class="method-item">
+                                    <i class="fas fa-chart-line"></i>
+                                    <span>Histogram Analysis</span>
+                                </div>
+                                <div class="method-item">
+                                    <i class="fas fa-search"></i>
+                                    <span>Pattern Recognition</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-header">
+                    <h3 class="results-title">
+                        <i class="fas fa-clipboard-list"></i>
+                        Analysis Results
+                    </h3>
+                    <div class="results-actions">
+                        <button class="btn btn--secondary" id="exportBtn">
+                            <i class="fas fa-download"></i>
+                            Export Results
+                        </button>
+                        <button class="btn btn--outline" id="clearBtn">
+                            <i class="fas fa-trash"></i>
+                            Clear All
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="batch-summary" id="batchSummary" style="display: none;">
+                    <div class="card">
+                        <div class="card__body">
+                            <h4>Batch Analysis Summary</h4>
+                            <div class="summary-stats">
+                                <div class="stat-item stat-item--total">
+                                    <span class="stat-value" id="totalImages">0</span>
+                                    <span class="stat-label">Total Images</span>
+                                </div>
+                                <div class="stat-item stat-item--clean">
+                                    <span class="stat-value" id="cleanImages">0</span>
+                                    <span class="stat-label">Clean</span>
+                                </div>
+                                <div class="stat-item stat-item--suspicious">
+                                    <span class="stat-value" id="suspiciousImages">0</span>
+                                    <span class="stat-label">Suspicious</span>
+                                </div>
+                                <div class="stat-item stat-item--detected">
+                                    <span class="stat-value" id="detectedImages">0</span>
+                                    <span class="stat-label">Stego Detected</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results-grid" id="resultsGrid">
+                    <!-- Results will be populated here -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Help Modal -->
+    <div class="modal hidden" id="helpModal">
+        <div class="modal__overlay" id="modalOverlay"></div>
+        <div class="modal__content">
+            <div class="modal__header">
+                <h3>Steganalysis Methods</h3>
+                <button class="modal__close" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal__body">
+                <div class="help-content">
+                    <div class="method-explanation">
+                        <h4>Chi-Square Test</h4>
+                        <p>Statistical test for detecting LSB replacement by analyzing pairs of values. Effective against simple LSB steganography.</p>
+                    </div>
+                    <div class="method-explanation">
+                        <h4>RS Analysis</h4>
+                        <p>Regular/Singular analysis for detecting LSB steganography by examining pixel value changes.</p>
+                    </div>
+                    <div class="method-explanation">
+                        <h4>Histogram Analysis</h4>
+                        <p>Detects anomalies in pixel value distributions that may indicate hidden data embedding.</p>
+                    </div>
+                    <div class="method-explanation">
+                        <h4>Pattern Recognition</h4>
+                        <p>Identifies signatures of common steganographic tools like F5, Steghide, and HUGO.</p>
+                    </div>
+                    <div class="confidence-levels">
+                        <h4>Confidence Levels</h4>
+                        <div class="confidence-item">
+                            <span class="confidence-range" style="color: var(--color-error);">90-100%</span>
+                            <span>Very High Confidence - Strong evidence of steganography</span>
+                        </div>
+                        <div class="confidence-item">
+                            <span class="confidence-range" style="color: #fd7e14;">70-89%</span>
+                            <span>High Confidence - Likely contains hidden data</span>
+                        </div>
+                        <div class="confidence-item">
+                            <span class="confidence-range" style="color: #ffc107;">50-69%</span>
+                            <span>Medium Confidence - Possible steganography detected</span>
+                        </div>
+                        <div class="confidence-item">
+                            <span class="confidence-range" style="color: #17a2b8;">30-49%</span>
+                            <span>Low Confidence - Weak indicators present</span>
+                        </div>
+                        <div class="confidence-item">
+                            <span class="confidence-range" style="color: var(--color-success);">0-29%</span>
+                            <span>Very Low Confidence - Likely clean image</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
